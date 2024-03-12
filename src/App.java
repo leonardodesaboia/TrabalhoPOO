@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import Entidades.*;
 import Exceções.NumeroNaoExistente;
+
 public class App {
     private static List<Produto> LerProdutos() {
         List<Produto> consumiveis = new ArrayList<Produto>();
@@ -18,9 +19,9 @@ public class App {
         File fileDados = new File(pathDados);
         Scanner sc = null;
         ArrayList<Object> dados = new ArrayList<>();
-        try{
+        try {
             sc = new Scanner(fileDados);
-            while(sc.hasNext()){
+            while (sc.hasNext()) {
 
                 String dataValidade = sc.next();
                 LocalDate data = LocalDate.parse(dataValidade, fmt);
@@ -38,7 +39,7 @@ public class App {
                 consumiveis.add(new AlimentoPerecivel(data, preco, nome, marca, imposto));
                 return consumiveis;
             }
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             Supermercado.criarArquivo(pathDados);
         }
         for (Object elemento : dados) {
@@ -46,11 +47,11 @@ public class App {
         }
         return null;
     }
+
     public static void main(String[] args) throws Exception {
-        
-        
+
         menuPrincipal();
-        
+
     }
 
     private static void menuPrincipal() {
@@ -80,17 +81,17 @@ public class App {
             }
         }
 
-    } 
+    }
 
     public static void loginGerente() {
         Supermercado supermercado = new Supermercado();
         for (Produto p : LerProdutos()) {
-            
+
             supermercado.CadastrarProdutoDireto(p);
         }
         Scanner sc = new Scanner(System.in);
         boolean loggedIn = false;
-    
+
         while (!loggedIn) {
             System.out.println("Digite seu login: ");
             int login = sc.nextInt();
@@ -153,56 +154,55 @@ public class App {
         Supermercado supermercado = new Supermercado();
         Scanner sc = new Scanner(System.in);
         boolean loggedIn = false;
-    
-    try {
-        while (!loggedIn) {
-            System.out.println("Digite seu login: ");
-            int login = sc.nextInt();
-            if (login == 2) {
-                System.out.println("Digite sua senha: ");
-                int senha = sc.nextInt();
-                if (senha == 123) {
-                    loggedIn = true;
-                    boolean sair = false;
-    
-                    while (!sair) {
-                        menuCaixa();
-                        int entrada = sc.nextInt();
-                        switch (entrada) {
-                            case 1:
-                               supermercado.cadastrarProduto();
-                                break;
-                            case 2:
-                                supermercado.CadastrarCliente();
-                                break;
-                            case 3:
-                                supermercado.ListarClientes();
-                                break;   
-                            case 4:
-                                supermercado.imprimirInformacaoProdutos();
-                                break;
-                            case 5:
-                                System.out.println("Saindo...");
-                                sair = true;
-                                break;
-                            default:
-                                System.out.println("Opção inválida.");
+
+        try {
+            while (!loggedIn) {
+                System.out.println("Digite seu login: ");
+                int login = sc.nextInt();
+                if (login == 2) {
+                    System.out.println("Digite sua senha: ");
+                    int senha = sc.nextInt();
+                    if (senha == 123) {
+                        loggedIn = true;
+                        boolean sair = false;
+
+                        while (!sair) {
+                            menuCaixa();
+                            int entrada = sc.nextInt();
+                            switch (entrada) {
+                                case 1:
+                                    supermercado.cadastrarProduto();
+                                    break;
+                                case 2:
+                                    supermercado.CadastrarCliente();
+                                    break;
+                                case 3:
+                                    supermercado.ListarClientes();
+                                    break;
+                                case 4:
+                                    supermercado.imprimirInformacaoProdutos();
+                                    break;
+                                case 5:
+                                    System.out.println("Saindo...");
+                                    sair = true;
+                                    break;
+                                default:
+                                    System.out.println("Opção inválida.");
+                            }
                         }
+                    } else {
+                        throw new IllegalStateException("Senha inválida.");
                     }
                 } else {
-                    throw new IllegalStateException("Senha inválida.");
+                    throw new IllegalStateException("Login inválido.");
                 }
-            } else {
-                throw new IllegalStateException("Login inválido.");
             }
+        } catch (NumeroNaoExistente e) {
+            System.out.println("Numero não existente");
         }
-        }catch (NumeroNaoExistente e) {
-        System.out.println("Numero não existente");
     }
-    }
-    
 
-    private static void menuGerente(){
+    private static void menuGerente() {
         System.out.println("1 - Cadastrar funcionario");
         System.out.println("2 - Cadastrar produto");
         System.out.println("3 - Cadastrar cliente");
@@ -215,7 +215,7 @@ public class App {
         System.out.println("10 - Sair");
     }
 
-    private static void menuCaixa(){
+    private static void menuCaixa() {
         System.out.println("1 - Cadastrar produto");
         System.out.println("2 - Cadastrar cliente");
         System.out.println("3 - Listar clientes");
